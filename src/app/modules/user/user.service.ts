@@ -6,11 +6,15 @@ import { JwtPayload } from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 /* @typescript-eslint/no-explicit-any */
 
-const getAllUsers = async (): Promise<IUser[] | null> => {
-  const result = await User.find()
+const getAllUsers = async (id: string): Promise<{ id: string; name: string }[]> => {
+  const users = await User.find({ _id: { $ne: id } }).select("_id name"); // Exclude the given ID and select only required fields
 
-  return result
-}
+  return users.map(user => ({
+    id: user._id.toString(), // Convert ObjectId to string
+    name: user.name
+  }));
+};
+
 
 const getSingleUser = async (id: string): Promise<IUser | null> => {
   const result = await User.findById({ _id: id })
@@ -57,8 +61,8 @@ const deleteUser = async (id: string): Promise<IUser | null> => {
 const getLoggedUser = async (id: JwtPayload): Promise<IUser | null> => {
   const result = await User.findById(id, {
     name: 1,
-    phoneNumber: 1,
-    address: 1,
+    email: 1,
+
     _id: 0,
   })
   if (!result) {
@@ -76,25 +80,9 @@ const updateLoggedUser = async (
     throw new ApiError(httpStatus.NOT_FOUND, 'User not found !')
   }
 
-  const { name, password, income, budget, ...UserData } = payload
+  
 
-  const updatedUserData: Partial<IUser> = { ...UserData }
-
-  // dynamically handling
-  if (name && Object.keys(name).length > 0) {
-    Object.keys(name).forEach(key => {
-      const nameKey = `name.${key}` as keyof Partial<IUser> // `name.fisrtName`
-      ;(updatedUserData as any)[nameKey] = name[key as keyof typeof name]
-    })
-  }
-  // Hash the password if provided
-  if (password) {
-    const salt = await bcrypt.genSalt(10)
-    const hashedPassword = await bcrypt.hash(password, salt)
-    updatedUserData.password = hashedPassword
-  }
-
-  const result = await User.findOneAndUpdate({ _id: id }, updatedUserData, {
+  const result = await User.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   }).select({ name: 1, phoneNumber: 1, address: 1, _id: 0 })
 

@@ -1,24 +1,25 @@
 import { z } from 'zod'
 
-const createUserZodSchema = z.object({
+const registerUserZodSchema = z.object({
   body: z.object({
-    phoneNumber: z.string(),
-    role: z.enum(['seller', 'buyer']),
-    password: z.string(),
-    name: z.object({
-      firstName: z.string(),
-      lastName: z.string(),
+  
+  
+    name: z.string({
+      required_error: 'Name is required',
     }),
-    address: z.string(),
-    budget: z.number(),
-    income: z.number(),
+    email: z.string({
+      required_error: 'Email is required',
+    }),
+    password: z.string({
+      required_error: 'Password is required',
+    }),
   }),
 })
 
 const loginZodSchema = z.object({
   body: z.object({
-    phoneNumber: z.string({
-      required_error: 'Phone Number is required',
+    email: z.string({
+      required_error: 'email Number is required',
     }),
     password: z.string({
       required_error: 'Password is required',
@@ -35,7 +36,7 @@ const refreshTokenZodSchema = z.object({
 })
 
 export const AuthValidation = {
-  createUserZodSchema,
+  registerUserZodSchema,
   loginZodSchema,
   refreshTokenZodSchema,
 }

@@ -6,10 +6,6 @@ import httpStatus from 'http-status'
 import sendResponse from '../../../shared/sendResponse'
 import { authService } from './auth.service'
 import { IUser } from '../user/user.interface'
-import { jwtHelpers } from '../../../helpers/jwtHelpers'
-import { Secret } from 'jsonwebtoken'
-import ApiError from '../../../errors/ApiError'
-import { User } from '../user/user.model'
 
 const createUser: RequestHandler = catchAsync(async (req, res, next) => {
   try {

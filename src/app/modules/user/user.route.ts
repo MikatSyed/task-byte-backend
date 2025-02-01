@@ -8,19 +8,20 @@ const router = express.Router()
 
 router.patch(
   '/my-profile',
-  auth(ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.SELLER),
+  auth(),
   UserController.updateLoggedUser
 )
 
 router.get(
   '/my-profile',
-  auth(ENUM_USER_ROLE.BUYER, ENUM_USER_ROLE.SELLER),
+  auth(),
   UserController.getLoggedUser
 )
 
-router.get('/', auth(ENUM_USER_ROLE.ADMIN), UserController.getAllUsers)
-router.patch('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.updateUser)
-router.get('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.getSingleUser)
-router.delete('/:id', auth(ENUM_USER_ROLE.ADMIN), UserController.deleteUser)
+router.get('/', auth(), UserController.getAllUsers)
+router.patch('/:id', auth(), UserController.updateUser)
+router.get('/:id', auth(), UserController.getSingleUser)
+router.delete('/:id', auth(), UserController.deleteUser)
 
-export const UserRoutes = router
+export const UserRoutes = router;
+

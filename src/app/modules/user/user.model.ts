@@ -25,11 +25,11 @@ UserSchema.pre('save', async function (next) {
 })
 
 UserSchema.statics.isUserExist = async function (
-  phoneNumber: string
+  email: string
 ): Promise<Pick<IUser, 'password' | 'email'  | '_id'> | null> {
   return await User.findOne(
-    { phoneNumber },
-    { password: 1, role: 1, phoneNumber: 1 }
+    { email },
+    { password: 1, name: 1, email: 1 }
   )
 }
 UserSchema.statics.isVarifiedUserExist = async function (
@@ -38,7 +38,7 @@ UserSchema.statics.isVarifiedUserExist = async function (
   console.log(id)
   return await User.findOne(
     { _id: id },
-    { password: 1, role: 1, phoneNumber: 1 }
+    { password: 1, email: 1, name: 1 }
   )
 }
 

@@ -6,14 +6,16 @@ import { AuthValidation } from './auth.validate'
 const router = express.Router()
 
 router.post(
-  '/signup',
-  validateRequest(AuthValidation.createUserZodSchema),
-  AuthController.createUser
-)
-router.post(
   '/login',
   validateRequest(AuthValidation.loginZodSchema),
   AuthController.loginUser
+)
+
+
+router.post(
+  '/signup',
+  validateRequest(AuthValidation.registerUserZodSchema),
+  AuthController.createUser
 )
 
 router.post(

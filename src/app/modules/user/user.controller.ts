@@ -7,9 +7,10 @@ import { userService } from './user.service'
 import { IUser } from './user.interface'
 
 const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const result = await userService.getAllUsers()
+  const id = req.user.userId
+  const result = await userService.getAllUsers(id)
 
-  sendResponse<IUser[]>(res, {
+  sendResponse<any[]>(res, {
     success: true,
     statusCode: httpStatus.OK,
     message: 'Users retrieved successfully !',
