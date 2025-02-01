@@ -8,7 +8,18 @@ import cookieParser from 'cookie-parser'
 
 const app: Application = express()
 
-app.use(cors())
+
+// Allow CORS from specified origins
+const allowedOrigins =['http://localhost:3000','http://localhost:3001','https://task-byte.vercel.app']
+
+
+const corsOptions: cors.CorsOptions = {
+  origin: allowedOrigins,
+};
+
+app.use(cors(corsOptions));
+
+
 app.use(cors())
 app.use(cookieParser())
 
